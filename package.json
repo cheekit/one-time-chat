@@ -2,8 +2,8 @@
   "name": "one-time-chat",
   "version": "1.0.0",
   "description": "this is unique chat service that can talk to somebody easily.",
-  "main": "index.js",
   "scripts": {
+    "start": "nf start -p 3000",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,6 +22,6 @@
   },
   "homepage": "https://github.com/ganezasan/one-time-chat#readme",
   "dependencies": {
-    "express": "^4.14.0"
+    "foreman": "^2.0.0"
   }
 }
