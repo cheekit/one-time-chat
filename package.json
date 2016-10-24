@@ -1,0 +1,27 @@
+{
+  "name": "one-time-chat",
+  "version": "1.0.0",
+  "description": "this is unique chat service that can talk to somebody easily.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ganezasan/one-time-chat.git"
+  },
+  "keywords": [
+    "socket.io",
+    "chat",
+    "react"
+  ],
+  "author": "ganezasan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ganezasan/one-time-chat/issues"
+  },
+  "homepage": "https://github.com/ganezasan/one-time-chat#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
