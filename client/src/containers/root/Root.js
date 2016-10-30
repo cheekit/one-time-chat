@@ -1,61 +1,85 @@
-import React, { PropTypes, Component } from 'react';
-import SizeMe from 'react-sizeme';
+import React, { Component } from 'react';
 import io from 'socket.io-client';
 
 import './root.css';
 
 const socket = io('http://localhost:3001');
 
-const propTypes = {
-  size: PropTypes.shape({
-    height: PropTypes.number,
-    width: PropTypes.number,
-  }),
-};
+function appendMessage(user, message, messages) {
+  messages.push({
+    user,
+    message,
+  });
+  return messages;
+}
 
 class Root extends Component {
   state = {
+    height: document.documentElement.clientHeight,
     users: [],
-    messages: [],
-    name: ''
-  }
-
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
+    messages: [
+      {
+        user: 'APPLICATION BOT',
+        message: 'Good night world!'
+      }
+    ],
+    name: '',
+    message: '',
   }
 
 	componentDidMount() {
+    window.addEventListener('resize', this.handleResize);
 		socket.on('init', this._initialize);
-		// socket.on('send:message', this._messageRecieve);
-		// socket.on('user:join', this._userJoined);
+		socket.on('send:message', this._messageRecieve);
+		socket.on('user:join', this._userJoined);
 		// socket.on('user:left', this._userLeft);
 		// socket.on('change:name', this._userChangedName);
 	}
 
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { size } = nextProps;
+
+    if(size) {
+      this.setState({
+        width: size.width,
+      });
+    }
+  }
+
+  handleResize = this.handleResize.bind(this);
+  handleResize() {
+    this.setState({
+      height: document.documentElement.clientHeight,
+    });
+  }
+
   _initialize = this._initialize.bind(this)
 	_initialize(data) {
 		const { users, name } = data;
-    console.log(data);
 		this.setState({ users, name });
 	}
 
-	// _messageRecieve(message) {
-	// 	var {messages} = this.state;
-	// 	messages.push(message);
-	// 	this.setState({messages});
-	// },
-  //
-	// _userJoined(data) {
-	// 	var {users, messages} = this.state;
-	// 	var {name} = data;
-	// 	users.push(name);
-	// 	messages.push({
-	// 		user: 'APPLICATION BOT',
-	// 		text : name +' Joined'
-	// 	});
-	// 	this.setState({users, messages});
-	// },
-  //
+  _messageRecieve = this._messageRecieve.bind(this)
+	_messageRecieve(message) {
+		const { messages } = this.state;
+		this.setState(appendMessage(message.user, message.message, messages));
+	}
+
+  _userJoined = this._userJoined.bind(this)
+	_userJoined(user) {
+		const {users, messages} = this.state;
+		users.push(user);
+	  messages.push({
+			user: 'APPLICATION BOT',
+			message : user.name +' Joined'
+		});
+		this.setState({users, messages});
+	}
+
 	// _userLeft(data) {
 	// 	var {users, messages} = this.state;
 	// 	var {name} = data;
@@ -63,7 +87,7 @@ class Root extends Component {
 	// 	users.splice(index, 1);
 	// 	messages.push({
 	// 		user: 'APPLICATION BOT',
-	// 		text : name +' Left'
+	// 		message : name +' Left'
 	// 	});
 	// 	this.setState({users, messages});
 	// },
@@ -75,16 +99,9 @@ class Root extends Component {
 	// 	users.splice(index, 1, newName);
 	// 	messages.push({
 	// 		user: 'APPLICATION BOT',
-	// 		text : 'Change Name : ' + oldName + ' ==> '+ newName
+	// 		message : 'Change Name : ' + oldName + ' ==> '+ newName
 	// 	});
 	// 	this.setState({users, messages});
-	// },
-  //
-	// handleMessageSubmit(message) {
-	// 	var {messages} = this.state;
-	// 	messages.push(message);
-	// 	this.setState({messages});
-	// 	socket.emit('send:message', message);
 	// },
   //
 	// handleChangeName(newName) {
@@ -99,18 +116,56 @@ class Root extends Component {
 	// 		this.setState({users, user: newName});
 	// 	});
 	// },
+  handleUpdateMessage = this.handleUpdateMessage.bind(this);
+  handleUpdateMessage(e) {
+    this.setState({message: e.target.value});
+  }
+
+  handleSubmit = this.handleSubmit.bind(this);
+  handleSubmit(e) {
+    e.preventDefault();
+    const { messages, message, name } = this.state;
+
+    const newMessages = appendMessage(name, message, messages);
+		socket.emit('send:message', message);
+
+    this.setState({
+      message: '',
+      messages: newMessages,
+    });
+  }
+
+  renderMessage(user, message, i) {
+    const userNameStyle = {
+      fontSize: '9px',
+      color: '#aaa',
+    };
+    return (
+      <li key={i}>
+        <span style={userNameStyle}>{user}</span><br />
+        {message}
+      </li>
+    );
+  }
 
 	render() {
-    // const { users, messages } = this.state;
-    console.log(this.state);
+    const { messages, message, height } = this.state;
+    const formHeight = 40;
+    const messagesStyle = {
+      height: height - formHeight,
+    };
 
 		return (
-			<div>
+			<div style={{height: height}}>
+        <ul className={"messages"} style={messagesStyle}>
+          {messages.map((m, i) => this.renderMessage(m.user, m.message, i))}
+        </ul>
+        <form onSubmit={this.handleSubmit}>
+          <input onChange={this.handleUpdateMessage} value={message}/><button>Send</button>
+        </form>
 			</div>
 		);
 	}
 }
 
-Root.propTypes = propTypes;
-
-export default SizeMe()(Root);
+export default Root;
