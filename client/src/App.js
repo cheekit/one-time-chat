@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Match } from 'react-router';
-import { Root, Sample } from './containers';
+import { Root, Sample, ChatSidebar } from './containers';
 import './App.css';
 
 class App extends Component {
@@ -9,7 +9,7 @@ class App extends Component {
       {
         pattern: '/',
         content: () => <Root />,
-        sidebar: () => null,
+        sidebar: () => <ChatSidebar />,
         exactly: true,
       },
       {
@@ -39,6 +39,14 @@ class App extends Component {
                 </div>
               </div>
               <div className="search_sidebar">
+                {routes.map((route, index) => (
+                  <Match
+                    key={index}
+                    pattern={route.pattern}
+                    component={route.sidebar}
+                    exactly={route.exactly}
+                  />
+                ))}
               </div>
             </section>
           </div>
