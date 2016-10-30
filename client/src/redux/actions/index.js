@@ -1,1 +1,4 @@
-export { default as initSocket } from './chat';
+export {
+  initSocket,
+  sendMessage
+} from './chat';

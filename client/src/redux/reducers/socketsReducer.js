@@ -5,6 +5,7 @@ import {
   UPDATE_USER,
   JOIN_USER,
   LEFT_USER,
+  SEND_MESSAGE,
 } from '../constants';
 
 const initState = () => {
@@ -33,12 +34,13 @@ function socketsReducer(state = initState(), action) {
         sockets: {
           users: {$set: action.users} ,
           name: {$set: action.name},
+          messages: {$push: [{ user: systemName, message: `Hello ${action.name} !!`}]}
         }
       });
     case RECEIVE_MESSAGE:
       return update(state, {
         sockets: {
-          messages: {$push: action.message}
+          messages: {$push: [action.message]}
         }
       });
     case JOIN_USER:
@@ -53,6 +55,13 @@ function socketsReducer(state = initState(), action) {
         sockets: {
           users: {$splice: [[state.sockets.users.indexOf(action.user.name), 1]]},
           messages: {$push: [{ user: systemName, message: `${action.user.name} Left`}]}
+        }
+      });
+    case SEND_MESSAGE:
+      state.sockets.socket.emit('send:message', action.message);
+      return update(state, {
+        sockets: {
+          messages: {$push: [{ user: action.user, message: action.message}]}
         }
       });
     default:

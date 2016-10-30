@@ -5,3 +5,4 @@ export const UPDATE_USER = 'UPDATE_USER';
 export const RECEIVE_MESSAGE = 'RECEIVE_MESSAGE';
 export const JOIN_USER = 'JOIN_USER';
 export const LEFT_USER = 'LEFT_USER';
+export const SEND_MESSAGE = 'SEND_MESSAGE';
