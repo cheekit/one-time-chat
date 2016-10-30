@@ -7,7 +7,7 @@ function _initialize(data) {
   return { users, name, type };
 }
 
-function initUser(socket, store) {
+function initUser(socket) {
 
   return dispatch => {
     socket.on('init', (data) => dispatch(_initialize(data)));
