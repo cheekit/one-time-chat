@@ -1,42 +1,21 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { initSocket } from '../../redux/actions';
+import { initSocket, sendMessage } from '../../redux/actions';
 
 import './root.css';
-
-const systemName = 'APPLICATION BOT';
 
 const propTypes = {
   dispatch: PropTypes.func,
   sockets: PropTypes.object,
 };
 
-function appendMessage(user, message, messages) {
-  messages.push({
-    user,
-    message,
-  });
-  return messages;
-}
-
-function removeUser(leftUser, users) {
-  const leftUserName = leftUser.name;
-  return users.filter((user) => user.name === leftUserName);
-}
-
 class Root extends Component {
   state = {
     height: document.documentElement.clientHeight,
-    users: [],
-    messages: [
-      {
-        user: systemName,
-        message: 'Good night world!'
-      }
-    ],
-    name: '',
+    sockets: {
+      messages: [],
+    },
     message: '',
-    sockets: {},
   }
 
   componentDidMount() {
@@ -45,10 +24,6 @@ class Root extends Component {
     dispatch(initSocket());
 
     window.addEventListener('resize', this.handleResize);
-    // socket.on('init', this._initialize);
-    // socket.on('send:message', this._messageRecieve);
-    // socket.on('user:join', this._userJoined);
-    // socket.on('user:left', this._userLeft);
   }
 
   componentWillUnmount() {
@@ -58,7 +33,6 @@ class Root extends Component {
   componentWillReceiveProps(nextProps) {
     const { sockets } = nextProps;
 
-    console.log(sockets);
     if (sockets) this.setState({ sockets });
   }
 
@@ -69,22 +43,6 @@ class Root extends Component {
     });
   }
 
-  _userJoined = this._userJoined.bind(this);
-  _userJoined(user) {
-    const { users, messages } = this.state;
-    users.push(user);
-    const newMessages = appendMessage(systemName, `${user.name} Joined`, messages);
-    this.setState({ users, messages: newMessages });
-  }
-
-  _userLeft = this._userLeft.bind(this);
-  _userLeft(user) {
-    const { users, messages } = this.state;
-    const newUsers = removeUser(user, users);
-    const newMessages = appendMessage(systemName, `${user.name} Left`, messages);
-    this.setState({ users: newUsers, messages: newMessages });
-  }
-
   handleUpdateMessage = this.handleUpdateMessage.bind(this);
   handleUpdateMessage(e) {
     this.setState({message: e.target.value});
@@ -93,14 +51,14 @@ class Root extends Component {
   handleSubmit = this.handleSubmit.bind(this);
   handleSubmit(e) {
     e.preventDefault();
-    const { messages, message, name } = this.state;
+    const { dispatch } = this.props;
+    const { message, sockets } = this.state;
+    const { name } = sockets;
 
-    const newMessages = appendMessage(name, message, messages);
-    // socket.emit('send:message', message);
+    dispatch(sendMessage(name, message))
 
     this.setState({
       message: '',
-      messages: newMessages,
     });
   }
 
@@ -118,7 +76,8 @@ class Root extends Component {
   }
 
   render() {
-    const { messages, message, height } = this.state;
+    const { sockets, message, height } = this.state;
+    const { messages } = sockets;
     const formHeight = 40;
     const messagesStyle = {
       height: height - formHeight,
