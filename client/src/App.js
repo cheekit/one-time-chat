@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Match } from 'react-router';
+import { BrowserRouter, Match, Miss } from 'react-router';
 import { Root, Sample, ChatSidebar } from './containers';
+import { NotFound } from './components';
 import './App.css';
 
 class App extends Component {
@@ -36,6 +37,7 @@ class App extends Component {
                       exactly={route.exactly}
                     />
                   ))}
+                  <Miss component={NotFound} />
                 </div>
               </div>
               <div className="search_sidebar">
