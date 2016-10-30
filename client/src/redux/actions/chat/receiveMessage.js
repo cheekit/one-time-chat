@@ -6,10 +6,10 @@ function _messageRecieve(message) {
   return { message, type };
 }
 
-function updateMessage(socket, store) {
+function receiveMessage(socket) {
   return dispatch => {
     socket.on('send:message', (data) => dispatch(_messageRecieve(data)));
   };
 }
 
-export default updateMessage;
+export default receiveMessage;

@@ -2,7 +2,7 @@ import update from 'react-addons-update';
 import {
   INITIALIZE_SOCKET,
   RECEIVE_MESSAGE,
-  UPDATE_MESSAGE,
+  UPDATE_USER,
   JOIN_USER,
   LEFT_USER,
 } from '../constants';

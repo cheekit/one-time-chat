@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import { SOCKET_IO_URL, INITIALIZE_SOCKET } from '../../constants';
 import initUser from './initUser';
-import updateMessage from './updateMessage';
+import receiveMessage from './receiveMessage';
 import joinUser from './joinUser';
 import leftUser from './leftUser';
 
@@ -12,7 +12,7 @@ function initSocket() {
   return dispatch => Promise.all([
     dispatch({ socket, type }),
     dispatch(initUser(socket)),
-    dispatch(updateMessage(socket)),
+    dispatch(receiveMessage(socket)),
     dispatch(joinUser(socket)),
     dispatch(leftUser(socket)),
   ]);
