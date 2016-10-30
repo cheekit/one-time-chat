@@ -1,0 +1,52 @@
+.toolbar {
+  height: 100%;
+}
+.toolbar_list {
+  height: 100%;
+  background-color: #fff;
+  pointer-events: auto;
+}
+
+.toolbar_controls {
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 20px;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.toolbar_controls>li {
+  display: block;
+  position: relative;
+  float: left;
+  margin: 0 15px 0 0;
+}
+
+.toolbar_controls .button {
+  height: 44px;
+  line-height: 48px;
+  pointer-events: all;
+}
+
+.button {
+  transition: all .2s ease-in-out;
+  user-select: none;
+  display: inline-block;
+  position: relative;
+  border: none;
+  border-radius: 2px;
+  font: normal normal normal 13px/40px GothamLight, Open Sans, Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 0 15px;
+  -webkit-font-smoothing: subpixel-antialiased;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.toolbar_controls .button.button_dark_blue {
+  color: #fff;
+  min-width: 90px;
+  box-sizing: border-box;
+  text-align: center;
+}
