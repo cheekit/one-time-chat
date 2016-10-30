@@ -1,8 +1,8 @@
-import { UPDATE_USER } from '../../constants';
+import { INIT_USER } from '../../constants';
 
-function _initialize(data) {
+function update(data) {
   const { users, name } = data;
-  const type = UPDATE_USER;
+  const type = INIT_USER;
 
   return { users, name, type };
 }
@@ -10,7 +10,7 @@ function _initialize(data) {
 function initUser(socket) {
 
   return dispatch => {
-    socket.on('init', (data) => dispatch(_initialize(data)));
+    socket.on('init', (data) => dispatch(update(data)));
   };
 }
 

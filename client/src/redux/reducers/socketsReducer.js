@@ -2,7 +2,7 @@ import update from 'react-addons-update';
 import {
   INITIALIZE_SOCKET,
   RECEIVE_MESSAGE,
-  UPDATE_USER,
+  INIT_USER,
   JOIN_USER,
   LEFT_USER,
   SEND_MESSAGE,
@@ -29,7 +29,7 @@ function socketsReducer(state = initState(), action) {
           socket: {$set: action.socket}
         }
       });
-    case UPDATE_USER:
+    case INIT_USER:
       return update(state, {
         sockets: {
           users: {$set: action.users} ,

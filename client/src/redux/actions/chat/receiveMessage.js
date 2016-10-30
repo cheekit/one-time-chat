@@ -1,14 +1,10 @@
 import { RECEIVE_MESSAGE } from '../../constants';
 
-function _messageRecieve(message) {
+function receiveMessage(socket) {
   const type = RECEIVE_MESSAGE;
 
-  return { message, type };
-}
-
-function receiveMessage(socket) {
   return dispatch => {
-    socket.on('send:message', (data) => dispatch(_messageRecieve(data)));
+    socket.on('send:message', (message) => dispatch({ message, type }));
   };
 }
 
