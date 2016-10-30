@@ -25,14 +25,25 @@ body {
     top: 48px;
 }
 
+.application_wrapper .application_header {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 44px;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
 .application_wrapper .application_content {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 1;
+  display: block;
+  position: absolute;
+  top: 44px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
 }
 
 .application_wrapper .application_content.with-header-notification {
