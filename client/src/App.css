@@ -50,34 +50,34 @@ body {
     display: none;
 }
 @media only screen and (min-device-width:768px) and (max-device-width:1024px) and (orientation:portrait) {
-    .application_wrapper .application_content, .application_wrapper .application_header {
+  .application_wrapper .application_content, .application_wrapper .application_header {
     display: none;
-}
+  }
 
-.application_wrapper .ipad_portait_message {
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -230px 0 0 -375px;
-    text-align: center;
-    width: 540px;
-    height: 290px;
-}
+  .application_wrapper .ipad_portait_message {
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: -230px 0 0 -375px;
+      text-align: center;
+      width: 540px;
+      height: 290px;
+  }
 
-.application_wrapper .ipad_portait_message svg {
-    margin: 30px auto;
-}
+  .application_wrapper .ipad_portait_message svg {
+      margin: 30px auto;
+  }
 
-.application_wrapper .ipad_portait_message .sd_logo path {
-    fill: #7e89a3;
-}
+  .application_wrapper .ipad_portait_message .sd_logo path {
+      fill: #7e89a3;
+  }
 
-.application_wrapper .ipad_portait_message h2 {
-    font-size: 14px;
-    font-family: GothamLight, Open Sans, Helvetica, Arial, sans-serif;
-    color: #5b637c;
-}
+  .application_wrapper .ipad_portait_message h2 {
+      font-size: 14px;
+      font-family: GothamLight, Open Sans, Helvetica, Arial, sans-serif;
+      color: #5b637c;
+  }
 }
 
 .search_sidebar {
@@ -89,7 +89,6 @@ body {
     bottom: 0;
     width: 330px;
     background: #fff;
-    color: #fff;
     overflow-x: hidden;
     overflow-y: auto;
     border-left: 1px solid #464d5e;
