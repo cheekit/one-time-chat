@@ -1,8 +1,7 @@
-import { UPDATE_MESSAGE } from '../../constants';
+import { RECEIVE_MESSAGE } from '../../constants';
 
 function _messageRecieve(message) {
-  const type = UPDATE_MESSAGE;
-
+  const type = RECEIVE_MESSAGE;
 
   return { message, type };
 }
