@@ -2,6 +2,8 @@ import io from 'socket.io-client';
 import { SOCKET_IO_URL, INITIALIZE_SOCKET } from '../../constants';
 import initUser from './initUser';
 import updateMessage from './updateMessage';
+import joinUser from './joinUser';
+import leftUser from './leftUser';
 
 function initSocket() {
   const socket = io(SOCKET_IO_URL);
@@ -11,6 +13,8 @@ function initSocket() {
     dispatch({ socket, type }),
     dispatch(initUser(socket)),
     dispatch(updateMessage(socket)),
+    dispatch(joinUser(socket)),
+    dispatch(leftUser(socket)),
   ]);
 }
 
