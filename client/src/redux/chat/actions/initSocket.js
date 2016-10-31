@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-import { SOCKET_IO_URL, INITIALIZE_SOCKET } from '../../constants';
+import { SOCKET_IO_URL, INITIALIZE_SOCKET } from '../constants';
 import initUser from './initUser';
 import receiveMessage from './receiveMessage';
 import joinUser from './joinUser';

@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import socketsReducer from './socketsReducer';
+import { socketsReducer } from './chat';
 
 const rootReducer = combineReducers({
   socketsReducer,

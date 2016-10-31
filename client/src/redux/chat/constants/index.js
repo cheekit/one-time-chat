@@ -1,5 +1,7 @@
+//BASE
 export const SOCKET_IO_URL = 'http://localhost:3001';
 
+// ACTION LIST
 export const INITIALIZE_SOCKET = 'INITIALIZE_SOCKET';
 export const INIT_USER = 'INIT_USER';
 export const RECEIVE_MESSAGE = 'RECEIVE_MESSAGE';

@@ -1,4 +1,4 @@
-import { RECEIVE_MESSAGE } from '../../constants';
+import { RECEIVE_MESSAGE } from '../constants';
 
 function receiveMessage(socket) {
   const type = RECEIVE_MESSAGE;

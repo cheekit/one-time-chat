@@ -1,4 +1,4 @@
-import { INIT_USER } from '../../constants';
+import { INIT_USER } from '../constants';
 
 function update(data) {
   const { users, name } = data;

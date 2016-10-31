@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { initSocket, sendMessage } from '../../redux/actions';
+import { initSocket, sendMessage } from '../../redux/chat';
 
 import './root.css';
 

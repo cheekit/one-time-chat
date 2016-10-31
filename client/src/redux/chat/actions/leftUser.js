@@ -1,4 +1,4 @@
-import { LEFT_USER } from '../../constants';
+import { LEFT_USER } from '../constants';
 
 function leftUser(socket) {
   const type = LEFT_USER;

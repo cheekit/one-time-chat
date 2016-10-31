@@ -1,4 +1,4 @@
-import { JOIN_USER } from '../../constants';
+import { JOIN_USER } from '../constants';
 
 function joinUser(socket) {
   const type = JOIN_USER;
