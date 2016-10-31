@@ -8,7 +8,7 @@ import configureStore from './redux/configureStore';
 //auth
 import { initAuth } from './redux/auth';
 
-import Routes from './Routes';
+import App from './App';
 import './index.css';
 
 const store = configureStore();
@@ -16,12 +16,12 @@ const store = configureStore();
 function render(Routes) {
   ReactDOM.render(
     <Provider store={store}>
-      <Routes store={store}/>
+      <App />
     </Provider>,
     document.getElementById('root')
   );
 }
 
 initAuth(store.dispatch)
-  .then(() => render(Routes))
+  .then(() => render(App))
   .catch(error => console.error(error)); // eslint-disable-line no-console
