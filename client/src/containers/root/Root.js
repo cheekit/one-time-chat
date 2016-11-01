@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { initSocket, sendMessage } from '../../redux/chat';
+import { ChatSidebar } from '../sidebars';
 
 import './root.css';
 
@@ -39,7 +40,7 @@ class Root extends Component {
   handleResize = this.handleResize.bind(this);
   handleResize() {
     this.setState({
-      height: document.documentElement.clientHeight,
+      height: document.querySelector('.application_content').clientHeight,
     });
   }
 
@@ -78,20 +79,30 @@ class Root extends Component {
   render() {
     const { sockets, message, height } = this.state;
     const { messages } = sockets;
-    const formHeight = 40;
+    const formHeight = 40+64;
     const messagesStyle = {
       height: height - formHeight,
     };
 
     return (
-      <div style={{height: height}}>
-        <ul className={"messages"} style={messagesStyle}>
-          {messages.map((m, i) => this.renderMessage(m.user, m.message, i))}
-        </ul>
-        <form onSubmit={this.handleSubmit}>
-          <input onChange={this.handleUpdateMessage} value={message}/><button>Send</button>
-        </form>
-      </div>
+      <section className="search">
+        <div className="search_content">
+          <div className="search_inner_content">
+            <div style={{height: height}}>
+              <ul className={"messages"} style={messagesStyle}>
+                {messages.map((m, i) => this.renderMessage(m.user, m.message, i))}
+              </ul>
+              <form onSubmit={this.handleSubmit}>
+                <input onChange={this.handleUpdateMessage} value={message}/><button>Send</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div className="search_sidebar">
+          <ChatSidebar />
+        </div>
+      </section>
+
     );
   }
 }

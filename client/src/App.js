@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { BrowserRouter, Match, Miss, Redirect } from 'react-router';
-import { Root, Sample, SignIn, ChatToolbar } from './containers';
+import { Root, Sample, SignIn, ChatToolbar, Toolbar } from './containers';
 import { getAuth, authActions } from './redux/auth';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -17,24 +17,26 @@ function App(props){
 
   const isAuth = auth.authenticated;
 
+  console.log(auth);
+
   const routes = [
     {
       pattern: '/',
       content: () => <Root />,
-      toolbar: () => <ChatToolbar />,
+      toolbar: () => <Toolbar auth={auth} signOut={signOut}/>,
       exactly: true,
       isAuth,
     },
     {
       pattern: '/sign-in',
       content: () => <SignIn isAuth={isAuth} signInWithGithub={signInWithGithub}></SignIn>,
-      toolbar: () => <ChatToolbar />,
+      toolbar: () => <Toolbar auth={auth} signOut={signOut}/>,
       isPublic: true,
     },
     {
       pattern: '/sample',
       content: () => <Sample />,
-      toolbar: () => null,
+      toolbar: () => <Toolbar auth={auth} signOut={signOut}/>,
       isPublic: true,
     },
   ];
@@ -55,7 +57,6 @@ function App(props){
             ))}
           </div>
           <div className="application_content">
-            <button onClick={signOut}>Sign out</button>
             <Miss component={NotFound} />
             {routes.map((route, index) => (
               <MatchWhenAuthorized

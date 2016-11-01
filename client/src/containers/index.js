@@ -6,4 +6,4 @@ export { default as SignIn } from './sign-in';
 
 export { ChatSidebar } from './sidebars';
 
-export { ChatToolbar } from './toolbars';
+export { ChatToolbar, Toolbar } from './toolbars';
