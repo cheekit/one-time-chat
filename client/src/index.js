@@ -25,11 +25,11 @@ const store = configureStore();
 
 const muiTheme = getMuiTheme({
   fontFamily: 'Roboto, sans-serif',
+  '-webkit-font-smoothing': 'antialiased',
   fontWeight: 300,
   palette: {
-    primary1Color: '#464d5e',
-    primary2Color: '#5c657b',
-    primary3Color: '#5c657b',
+    primary1Color: '#333',
+    accent1Color: '#7cb342',
   }
 });
 
