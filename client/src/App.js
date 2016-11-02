@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { BrowserRouter, Match, Miss, Redirect } from 'react-router';
-import { Root, Sample, SignIn, ChatToolbar, Toolbar } from './containers';
+import { Root, Sample, SignIn, Toolbar, Chat } from './containers';
 import { getAuth, authActions } from './redux/auth';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -16,8 +16,6 @@ function App(props){
   const { auth, signOut, signInWithGithub } = props;
 
   const isAuth = auth.authenticated;
-
-  console.log(auth);
 
   const routes = [
     {
@@ -38,6 +36,12 @@ function App(props){
       content: () => <Sample />,
       toolbar: () => <Toolbar auth={auth} signOut={signOut}/>,
       isPublic: true,
+    },
+    {
+      pattern: '/chat',
+      content: () => <Chat />,
+      toolbar: () => <Toolbar auth={auth} signOut={signOut}/>,
+      isAuth,
     },
   ];
 
