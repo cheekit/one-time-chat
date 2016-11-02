@@ -1,5 +1,8 @@
 import React, { PropTypes } from 'react';
 import { Redirect } from 'react-router';
+import { FlatButton } from 'material-ui';
+
+import './SignIn.css';
 
 const propTypes = {
   signInWithGithub: PropTypes.func.isRequired,
@@ -9,6 +12,16 @@ const propTypes = {
 function SignIn(props) {
   const {signInWithGithub, isAuth} = props;
 
+  const buttonStyle = {
+    marginBottom: '10px',
+    border: '1px solid #fff',
+    width: '100%',
+    height: '48px',
+    fontSize: '1.125rem',
+    lineHeight: '48px',
+    color: '#fff',
+  };
+
   return (
     <div className="g-row sign-in">
       {isAuth && (
@@ -16,7 +29,7 @@ function SignIn(props) {
       )}
       <div className="g-col">
         <h1 className="sign-in__heading">Sign in</h1>
-        <button className="btn sign-in__button" onClick={signInWithGithub} type="button">GitHub</button>
+        <FlatButton style={buttonStyle} onTouchTap={signInWithGithub} label="GitHub"></FlatButton>
       </div>
     </div>
   );
