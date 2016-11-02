@@ -4,17 +4,14 @@ import {
   AppBar,
   MenuItem,
   FlatButton,
-  Toggle,
   IconMenu,
-  IconButton,
-  Avatar
+  Avatar,
 } from 'material-ui';
 
 import {
   ActionQuestionAnswer,
-  NavigationMoreVert
+  ContentAddCircleOutline,
 } from 'material-ui/svg-icons';
-import ActionAndroid from 'material-ui/svg-icons/action/android';
 
 class Login extends Component {
   render() {
@@ -51,7 +48,6 @@ class CustomButton extends Component{
 
 function Logged(props) {
   const { name, src, signOut } = props;
-  console.log(Link);
 
   return (
     <IconMenu
@@ -68,7 +64,6 @@ function Logged(props) {
 const propTypes = {
   auth: PropTypes.object,
   signOut: PropTypes.func,
-
 };
 
 class Toolbar extends Component {
@@ -83,14 +78,30 @@ class Toolbar extends Component {
 
     const iconStyle = {
       color: '#7cb342',
-      paddingTop: '10px',
+      paddingTop: '6px',
       width: '36px',
       height: '36px',
     };
 
+    const titleElement = (
+      <div style={{display: 'inline-block'}}>
+        <span style={{marginRight: '20px'}} >OneTimeChat</span>
+        {
+          isAuth ?
+            <FlatButton
+              style={{color: "white", border: '1px solid white', height: '40px'}}
+              label={'AddRoom'}
+              labelPosition="after"
+              primary={true}
+              icon={<ContentAddCircleOutline />}
+            /> : null
+        }
+      </div>
+    );
+
     return (
       <AppBar
-        title="OneTimeChat"
+        title={titleElement}
         titleStyle={{fontWeight: 300}}
         iconElementLeft={<ActionQuestionAnswer style={iconStyle}/>}
         iconElementRight={rightElement}
@@ -99,5 +110,7 @@ class Toolbar extends Component {
     );
   }
 }
+
+Toolbar.propTypes = propTypes;
 
 export default Toolbar;
