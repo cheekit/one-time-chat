@@ -7,7 +7,9 @@ export { default as SignIn } from './sign-in';
 
 export { default as Chat } from './chat';
 
-// Components
+export { default as CreateChannel } from './create-channel';
+
+// parts
 export { ChatSidebar } from './sidebars';
 
 export { ChatToolbar, Toolbar } from './toolbars';

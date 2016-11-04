@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { BrowserRouter, Match, Miss, Redirect } from 'react-router';
-import { Root, Sample, SignIn, Toolbar, Chat } from './containers';
+import { Root, Sample, SignIn, Toolbar, Chat, CreateChannel } from './containers';
 import { getAuth, authActions } from './redux/auth';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -40,6 +40,12 @@ function App(props){
     {
       pattern: '/chat',
       content: () => <Chat />,
+      toolbar: () => <Toolbar auth={auth} signOut={signOut}/>,
+      isAuth,
+    },
+    {
+      pattern: '/create-channel',
+      content: () => <CreateChannel />,
       toolbar: () => <Toolbar auth={auth} signOut={signOut}/>,
       isAuth,
     },
