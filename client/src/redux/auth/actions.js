@@ -41,16 +41,6 @@ export function signInWithGithub() {
   return authenticate(new firebase.auth.GithubAuthProvider());
 }
 
-
-export function signInWithGoogle() {
-  return authenticate(new firebase.auth.GoogleAuthProvider());
-}
-
-
-export function signInWithTwitter() {
-  return authenticate(new firebase.auth.TwitterAuthProvider());
-}
-
 export function signOut() {
   return dispatch => {
     firebaseAuth.signOut()
