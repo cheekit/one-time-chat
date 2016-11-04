@@ -87,14 +87,16 @@ class Toolbar extends Component {
       <div style={{display: 'inline-block'}}>
         <span style={{marginRight: '20px'}} >OneTimeChat</span>
         {
-          isAuth ?
-            <FlatButton
-              style={{color: "white", border: '1px solid white', height: '40px'}}
-              label={'AddRoom'}
-              labelPosition="after"
-              primary={true}
-              icon={<ContentAddCircleOutline />}
-            /> : null
+          isAuth &&
+            <Link to="/create-channel">
+              <FlatButton
+                style={{color: "white", border: '1px solid white', height: '40px'}}
+                label={'AddRoom'}
+                labelPosition="after"
+                primary={true}
+                icon={<ContentAddCircleOutline />}
+              />
+            </Link>
         }
       </div>
     );
