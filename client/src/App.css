@@ -28,13 +28,16 @@ body {
 }
 
 .application_wrapper .application_content {
-  display: block;
+  display: flex;
   position: absolute;
   top: 64px;
   left: 0;
   bottom: 0;
   right: 0;
   z-index: 1;
+  justify-content: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
 }
 
 .application_wrapper .application_content.with-header-notification {

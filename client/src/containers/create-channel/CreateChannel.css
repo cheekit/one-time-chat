@@ -1,0 +1,29 @@
+.contents {
+  width: 40rem;
+  max-width: 100%;
+  padding-bottom: 2rem;
+  padding-top: 15vh;
+}
+
+.channel_modal_header {
+	padding: 20px 0px;
+}
+
+.channel_modal_header > h1 {
+	font-weight: 100;
+}
+
+.channel_modal_content {
+	position: relative;
+}
+
+.input_list {
+	list-style-type: none;
+	padding: 10px 0px;
+}
+
+.bottom_area {
+	margin-top: 10px;
+	position: absolute;
+	right: 0;
+}

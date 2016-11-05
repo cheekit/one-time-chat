@@ -24,9 +24,9 @@ injectTapEventPlugin();
 const store = configureStore();
 
 const muiTheme = getMuiTheme({
-  fontFamily: 'Roboto, sans-serif',
+  fontFamily: 'aktiv-grotesk-std,Helvetica Neue,Arial,sans-serif',
   '-webkit-font-smoothing': 'antialiased',
-  fontWeight: 300,
+  fontWeight: 100,
   palette: {
     primary1Color: '#333',
     accent1Color: '#7cb342',
