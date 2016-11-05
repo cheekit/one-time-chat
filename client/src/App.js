@@ -10,6 +10,7 @@ import './App.css';
 const propTypes = {
   auth: PropTypes.object.isRequired,
   signOut: PropTypes.func.isRequired,
+  signInWithGithub: PropTypes.func.isRequired,
 };
 
 function App(props){
