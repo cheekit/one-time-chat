@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { channelActions } from '../../redux/channels';
 import { Toggle, TextField, FlatButton } from 'material-ui';
+import validator from 'validator';
 
 import './CreateChannel.css';
 
@@ -22,6 +23,8 @@ function initChannel() {
 class CreateChannel extends Component {
   state = {
     channel: initChannel(),
+    errors: [],
+    disabledSubmit: true,
   }
 
   componentDidMount() {
@@ -54,7 +57,33 @@ class CreateChannel extends Component {
     });
   }
 
-  renderInputText(key, label, hint, value, errorText, validation){
+  handleValid = this.handleValid.bind(this);
+  handleValid(key, value, validations, prevErrors) {
+    const primaryValid = validations.filter(({primary}) => primary === true);
+    const primaryErrors = primaryValid.map(({message, valid}) => {
+      return valid(value) === true ? '' : message;
+    }).filter((error) => error !== '');
+
+    const errors = primaryErrors.length === 0 &&
+      validations.map(({message, valid}) => {
+       return valid(value) === true ? '' : message;
+      }).filter((error) => error !== '');
+
+    const filterErrorsWithoutKey = prevErrors.filter((error) => error.key !== key);
+    if(errors.length > 0 || primaryErrors.length > 0) {
+      filterErrorsWithoutKey.push({
+        key: key,
+        message: [primaryErrors, ...errors]
+      });
+    }
+
+    this.setState({
+      errors: filterErrorsWithoutKey,
+      disabledSubmit: filterErrorsWithoutKey.length > 0 ? true : false,
+    });
+  }
+
+  renderInputText(key, label, hint, value, errorText, validations, props){
     const textFieldStyle = {
       style: {
         width: '100%',
@@ -79,6 +108,7 @@ class CreateChannel extends Component {
     return (
       <li key={key}>
         <TextField
+          {...props}
           style={textFieldStyle.style}
           value={value}
           hintText={hint}
@@ -90,7 +120,7 @@ class CreateChannel extends Component {
           underlineFocusStyle={textFieldStyle.underlineFocus}
           onBlur={(e) => {
             e.preventDefault();
-            throw 'error';
+            this.handleValid(key, e.target.value, validations, this.state.errors);
           }}
           onChange={(e) => {
             this.handleUpdate(key, e.target.value);
@@ -102,7 +132,7 @@ class CreateChannel extends Component {
   }
 
   render() {
-    const { channel } = this.state;
+    const { channel, errors, disabledSubmit } = this.state;
     const toggleLabel = channel.private ? 'Private' : 'Public';
 
     const toggleStyle = {
@@ -117,22 +147,66 @@ class CreateChannel extends Component {
       }
     };
 
+    const submitButtonStyle = {
+      color: "white",
+      border: '1px solid white',
+      height: '40px',
+      opacity: disabledSubmit ? 0.5 : 1,
+    };
+
     const inputList = [
       {
         key: 'name',
         label: 'Name',
         hint: 'Please fill in a channel name',
         value: channel.name,
-        errorText: 'duplicate name',
-        validation: (name) => false,
+        props: {maxLength: 30},
+        errorMessage: '',
+        validations: [
+          {
+            message: "Please fill in a channel name.",
+            valid: (name) => name !== '',
+            primary: true,
+          },
+          {
+            message: "channel names must be between 1 and 30 characters long.",
+            valid: (name) => validator.isLength(name, {min:1, max: 30}),
+          },
+          {
+            message: "channel names can't contain special characters, spaces, or periods.",
+            valid: (name) => validator.isAlphanumeric(name),
+          },
+        ],
       },
       {
         key: 'purpose',
         label: 'Purpose: (optional)',
         hint: "what's this channel about?",
         value: channel.purpose,
+        props: {maxLength: 250},
+        errorMessage: '',
+        validations: [
+          {
+            message: "channel names must be less than 250 characters long.",
+            valid: (name) => validator.isLength(name, {max: 250}),
+          },
+        ],
       },
     ];
+
+    if (errors.length > 0) {
+      inputList.forEach((item) => {
+        const errorMessages = errors
+          .filter((error) => error.key === item.key)
+          .map((error) => error.message);
+
+        if (errorMessages.length > 0) {
+          item.errorText = errorMessages.join();
+        } else {
+          item.errorText = '';
+        }
+      });
+    }
 
     return (
       <div className='contents'>
@@ -159,18 +233,19 @@ class CreateChannel extends Component {
                   item.hint,
                   item.value,
                   item.errorText,
-                  item.validation
+                  item.validations,
+                  item.props
                 ))
               )}
             </ul>
             <div className="bottom_area">
               <FlatButton
-                style={{color: "white", border: '1px solid white', height: '40px'}}
+                style={submitButtonStyle}
                 label={'Create Channel'}
                 labelPosition="after"
                 primary={true}
                 onClick={this.handleSubmit}
-                disabled={true}
+                disabled={disabledSubmit}
               />
             </div>
           </div>
