@@ -2,7 +2,7 @@
 import { channelList } from './channel-list';
 import {
   CREATE_CHANNEL_ERROR,
-  CREATE_CHANNEL_SUCCESS
+  CREATE_CHANNEL_SUCCESS,
   // DELETE_TASK_ERROR,
   // DELETE_TASK_SUCCESS,
   // FILTER_TASKS,
@@ -11,10 +11,14 @@ import {
   // UNLOAD_TASKS_SUCCESS,
   // UPDATE_TASK_ERROR,
   // UPDATE_TASK_SUCCESS
+  UNLOAD_CHANNELS_SUCCESS,
+  LOAD_CHANNELS_SUCCESS
 } from './action-types';
 
 
 export function createChannel(channel) {
+  console.log(channelList);
+  console.log(channel);
   return dispatch => {
     channelList.push(channel)
       .catch(error => dispatch(createChannelError(error)));
@@ -94,12 +98,12 @@ export function createChannelSuccess(channel) {
 //   };
 // }
 //
-// export function loadTasksSuccess(tasks) {
-//   return {
-//     type: LOAD_TASKS_SUCCESS,
-//     payload: tasks
-//   };
-// }
+export function loadChannelsSuccess(channels) {
+  return {
+    type: LOAD_CHANNELS_SUCCESS,
+    payload: channels
+  };
+}
 //
 // export function filterTasks(filterType) {
 //   return {
@@ -108,17 +112,17 @@ export function createChannelSuccess(channel) {
 //   };
 // }
 //
-// export function loadTasks() {
-//   return (dispatch, getState) => {
-//     const { auth } = getState();
-//     taskList.path = `tasks/${auth.id}`;
-//     taskList.subscribe(dispatch);
-//   };
-// }
-//
-// export function unloadTasks() {
-//   taskList.unsubscribe();
-//   return {
-//     type: UNLOAD_TASKS_SUCCESS
-//   };
-// }
+export function loadChannels() {
+  return (dispatch, getState) => {
+    const { auth } = getState();
+    channelList.path = `channels/${auth.id}`;
+    channelList.subscribe(dispatch);
+  };
+}
+
+export function unloadChannels() {
+  channelList.unsubscribe();
+  return {
+    type: UNLOAD_CHANNELS_SUCCESS
+  };
+}

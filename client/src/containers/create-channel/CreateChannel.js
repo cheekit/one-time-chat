@@ -1,49 +1,35 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { createChannel } from '../../redux/channels';
-import { Toggle } from 'material-ui';
+import { channelActions } from '../../redux/channels';
+import { Toggle, TextField, FlatButton } from 'material-ui';
 
 import './CreateChannel.css';
 
 const propTypes = {
-  dispatch: PropTypes.func,
-  channels: PropTypes.object,
+  loadChannels: PropTypes.func.isRequired,
+  unloadChannels: PropTypes.func.isRequired,
+  createChannel: PropTypes.func.isRequired,
 };
+
+function initChannel() {
+  return {
+    private: false,
+    name: '',
+    purpose: '',
+  };
+}
 
 class CreateChannel extends Component {
   state = {
-    channels: {
-      list: [],
-    },
-    channel: {
-      private: false,
-      channelName: '',
-      purpose: '',
-      invites: [],
-    }
+    channel: initChannel(),
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-
-    window.addEventListener('resize', this.handleResize);
+    this.props.loadChannels();
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { sockets } = nextProps;
-
-    if (sockets) this.setState({ sockets });
-  }
-
-  handleResize = this.handleResize.bind(this);
-  handleResize() {
-    this.setState({
-      height: document.querySelector('.application_content').clientHeight,
-    });
+    this.props.unloadChannels();
   }
 
   handleUpdate = this.handleUpdate.bind(this);
@@ -58,48 +44,135 @@ class CreateChannel extends Component {
   handleSubmit = this.handleSubmit.bind(this);
   handleSubmit(e) {
     e.preventDefault();
-    const { dispatch } = this.props;
-    const { message, sockets } = this.state;
-    const { name } = sockets;
+    const { createChannel } = this.props;
+    const { channel } = this.state;
 
-    dispatch(createChannel(name))
+    createChannel(channel);
 
     this.setState({
-      message: '',
+      channel: initChannel(),
     });
   }
 
-  renderMessage(user, message, i) {
-    const userNameStyle = {
-      fontSize: '9px',
-      color: '#aaa',
+  renderInputText(key, label, hint, value, errorText, validation){
+    const textFieldStyle = {
+      style: {
+        width: '100%',
+      },
+      floatingLabel: {
+        color: '#ccc',
+      },
+      inputStyle: {
+        color: '#fff',
+      },
+      hintStyle: {
+        color: '#ccc',
+      },
+      floatingLabelFocus: {
+        color: '#2ab27b',
+      },
+      underlineFocus: {
+        borderColor: '#2ab27b',
+      }
     };
+
     return (
-      <li key={i}>
-        <span style={userNameStyle}>{user}</span><br />
-        {message}
+      <li key={key}>
+        <TextField
+          style={textFieldStyle.style}
+          value={value}
+          hintText={hint}
+          floatingLabelText={label}
+          inputStyle={textFieldStyle.inputStyle}
+          floatingLabelStyle={textFieldStyle.floatingLabel}
+          hintStyle={textFieldStyle.hintStyle}
+          floatingLabelFocusStyle={textFieldStyle.floatingLabelFocus}
+          underlineFocusStyle={textFieldStyle.underlineFocus}
+          onBlur={(e) => {
+            e.preventDefault();
+            throw 'error';
+          }}
+          onChange={(e) => {
+            this.handleUpdate(key, e.target.value);
+          }}
+          errorText={errorText}
+        />
       </li>
     );
   }
 
   render() {
-    const { channels, channel, height } = this.state;
-    console.log(channel);
-    const toggleLabel = channel.private ? 'private' : 'public';
+    const { channel } = this.state;
+    const toggleLabel = channel.private ? 'Private' : 'Public';
+
+    const toggleStyle = {
+      thumbSwitched: {
+        backgroundColor: '#2ab27b',
+      },
+      trackSwitched: {
+        backgroundColor: '#95D9BE',
+      },
+      labelStyle: {
+        color: 'white',
+      }
+    };
+
+    const inputList = [
+      {
+        key: 'name',
+        label: 'Name',
+        hint: 'Please fill in a channel name',
+        value: channel.name,
+        errorText: 'duplicate name',
+        validation: (name) => false,
+      },
+      {
+        key: 'purpose',
+        label: 'Purpose: (optional)',
+        hint: "what's this channel about?",
+        value: channel.purpose,
+      },
+    ];
 
     return (
-      <div>
+      <div className='contents'>
         <div className="channel_modal">
-          <div>
-            <h1 className="channel_modal_header">Create a channel</h1>
+          <div className="channel_modal_header">
+            <h1>Create a channel</h1>
             <p className="input_note_special medium_bottom_margin"></p>
           </div>
-          <div>
+          <div className="channel_modal_content">
             <Toggle
+              defaultToggled={channel.private}
               label={toggleLabel}
               labelPosition="right"
+              thumbSwitchedStyle={toggleStyle.thumbSwitched}
+              trackSwitchedStyle={toggleStyle.trackSwitched}
+              labelStyle={toggleStyle.labelStyle}
               onToggle={(e, logged) => this.handleUpdate('private', logged)}
             />
+            <ul className="input_list">
+              {inputList.map((item) => (
+                this.renderInputText(
+                  item.key,
+                  item.label,
+                  item.hint,
+                  item.value,
+                  item.errorText,
+                  item.validation
+                ))
+              )}
+            </ul>
+            <div className="bottom_area">
+              <FlatButton
+                style={{color: "white", border: '1px solid white', height: '40px'}}
+                label={'Create Channel'}
+                labelPosition="after"
+                primary={true}
+                onClick={this.handleSubmit}
+                disabled={true}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -107,12 +180,6 @@ class CreateChannel extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  const { channels } = state.channels;
-
-  return { channels };
-}
-
 CreateChannel.propTypes = propTypes;
 
-export default connect(mapStateToProps)(CreateChannel);
+export default connect(null, channelActions)(CreateChannel);
