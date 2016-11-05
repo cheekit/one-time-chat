@@ -12,6 +12,10 @@ const propTypes = {
   createChannel: PropTypes.func.isRequired,
 };
 
+const contextTypes = {
+  router: PropTypes.object.isRequired,
+}
+
 function initChannel() {
   return {
     private: false,
@@ -55,6 +59,7 @@ class CreateChannel extends Component {
     this.setState({
       channel: initChannel(),
     });
+    this.context.router.replaceWith('/');
   }
 
   handleValid = this.handleValid.bind(this);
@@ -194,12 +199,12 @@ class CreateChannel extends Component {
       },
     ];
 
+    //merge errors
     if (errors.length > 0) {
       inputList.forEach((item) => {
         const errorMessages = errors
           .filter((error) => error.key === item.key)
           .map((error) => error.message);
-
         if (errorMessages.length > 0) {
           item.errorText = errorMessages.join();
         } else {
@@ -256,5 +261,6 @@ class CreateChannel extends Component {
 }
 
 CreateChannel.propTypes = propTypes;
+CreateChannel.contextTypes = contextTypes;
 
 export default connect(null, channelActions)(CreateChannel);
