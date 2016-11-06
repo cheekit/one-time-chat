@@ -1,0 +1,18 @@
+.channel-list {
+	display: block;
+  width: 100%;
+}
+.channel-list > .channel {
+	width: 25%;
+	height: 185px;
+	max-width: 100%;
+	display: inline-block;
+  text-align: left;
+	overflow: hidden;
+	padding: 10px;
+}
+.channel-list > .channel > .border-box {
+	border: 1px solid;
+	height: 100%;
+	padding: 10px;
+}
