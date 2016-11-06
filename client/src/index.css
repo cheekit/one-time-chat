@@ -2,7 +2,7 @@ body {
   -webkit-font-smoothing: antialiased;
   background: #333;
   color: white;
-  overflow: hidden;
+  /*overflow: hidden;*/
   font-family: aktiv-grotesk-std,Helvetica Neue,Arial,sans-serif;
   min-width: 990px;
   -webkit-overflow-scrolling: touch;

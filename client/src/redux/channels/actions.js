@@ -6,9 +6,7 @@ import {
   // DELETE_TASK_ERROR,
   // DELETE_TASK_SUCCESS,
   // FILTER_TASKS,
-  // LOAD_TASKS_SUCCESS,
   // UNDELETE_TASK_ERROR,
-  // UNLOAD_TASKS_SUCCESS,
   // UPDATE_TASK_ERROR,
   // UPDATE_TASK_SUCCESS
   UNLOAD_CHANNELS_SUCCESS,
@@ -17,8 +15,6 @@ import {
 
 
 export function createChannel(channel) {
-  console.log(channelList);
-  console.log(channel);
   return dispatch => {
     channelList.push(channel)
       .catch(error => dispatch(createChannelError(error)));

@@ -1,30 +1,45 @@
 import React, { PropTypes, Component } from 'react';
+import { connect } from 'react-redux';
+import { channelActions } from '../../redux/channels';
 import './root.css';
+import { ChannelList } from '../../components'
 
 const propTypes = {
   dispatch: PropTypes.func,
-  sockets: PropTypes.object,
+  channels: PropTypes.object,
 };
 
 class Root extends Component {
-  render() {
-    return (
-      <div>
-        <h1>Root</h1>
-        <p> After it'll be show chat rooms</p>
+  componentWillMount() {
+    this.props.loadChannels();
+    // this.props.filterChannels(this.props.location.query.filter);
+  }
 
-        <h2>Todo</h2>
-        <ul>
-          <li>Add Room</li>
-          <li>Show Rooms</li>
-          <li>Join Rooms</li>
-          <li>Send Message (text)</li>
-          <li>Send Message (image)</li>
-          <li>Send Message (link)</li>
-          <li>Edit Message</li>
-          <li>Delete Message</li>
-          <li>Close room after 15 minutes</li>
-        </ul>
+  // componentWillReceiveProps(nextProps) {
+    // if (nextProps.location.query.filter !== this.props.location.query.filter) {
+    //   this.props.filterChannels(nextProps.location.query.filter);
+    // }
+  // }
+
+  componentWillUnmount() {
+    this.props.unloadChannels();
+  }
+
+  renderChannels(channels) {
+    return (
+      <ChannelList
+        channels={channels}
+      />
+    );
+  }
+
+  render() {
+    const { channels } = this.props;
+
+    return (
+      <div className='rootContents'>
+        <h1>Root</h1>
+        {this.renderChannels(channels)}
       </div>
     );
   }
@@ -32,4 +47,18 @@ class Root extends Component {
 
 Root.propTypes = propTypes;
 
-export default Root;
+function mapStateToProps(state) {
+  const { channels } = state;
+
+  return { channels: channels.list };
+}
+
+const mapDispatchToProps = Object.assign(
+  {},
+  channelActions
+);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Root);

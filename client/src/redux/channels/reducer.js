@@ -5,10 +5,10 @@ import {
 } from '../auth';
 
 import {
-  CREATE_CHANNEL_SUCCESS
+  CREATE_CHANNEL_SUCCESS,
+  LOAD_CHANNELS_SUCCESS
   // DELETE_TASK_SUCCESS,
   // FILTER_TASKS,
-  // LOAD_TASKS_SUCCESS,
   // UPDATE_TASK_SUCCESS
 } from './action-types';
 
@@ -42,8 +42,8 @@ export function channelsReducer(state = new ChannelState(), {payload, type}) {
     // case FILTER_TASKS:
     //   return state.set('filter', payload.filterType || '');
     //
-    // case LOAD_TASKS_SUCCESS:
-    //   return state.set('list', new List(payload.reverse()));
+    case LOAD_CHANNELS_SUCCESS:
+      return state.set('list', new List(payload.reverse()));
     //
     // case UPDATE_TASK_SUCCESS:
     //   return state.merge({
