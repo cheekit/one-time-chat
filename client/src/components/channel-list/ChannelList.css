@@ -1,18 +1,63 @@
 .channel-list {
-	display: block;
+  display: block;
   width: 100%;
 }
+
 .channel-list > .channel {
-	width: 25%;
-	height: 185px;
-	max-width: 100%;
-	display: inline-block;
+  width: 25%;
+  height: 185px;
+  max-width: 100%;
+  display: inline-block;
   text-align: left;
-	overflow: hidden;
-	padding: 10px;
+  overflow: hidden;
+  padding: 10px;
 }
 .channel-list > .channel > .border-box {
-	border: 1px solid;
-	height: 100%;
-	padding: 10px;
+  border: 1px solid;
+  height: 100%;
+  padding: 10px;
+}
+
+.channel {
+  position: relative;
+}
+
+.channel-overlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.28);
+}
+
+.after-channel-overlay-line {
+  border-top: none rgb(0, 188, 212);
+  border-right: none rgb(0, 188, 212);
+  border-bottom: 2px solid rgb(0, 188, 212);
+  border-left: none rgb(0, 188, 212);
+  border-image: initial;
+  box-sizing: content-box;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: scaleX(0);
+  transition: all 1000ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+}
+
+.channel-overlay-line {
+  border-top: none rgb(0, 188, 212);
+  border-right: none rgb(0, 188, 212);
+  border-bottom: 2px solid rgb(0, 188, 212);
+  border-left: none rgb(0, 188, 212);
+  border-image: initial;
+  box-sizing: content-box;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: scaleX(1);
+  transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
 }
