@@ -38,7 +38,7 @@ class Root extends Component {
 
     return (
       <div className='rootContents'>
-        <h1>Root</h1>
+        <h1 style={{padding: '10px'}}>Channels</h1>
         {this.renderChannels(channels)}
       </div>
     );
