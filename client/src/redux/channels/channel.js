@@ -25,14 +25,3 @@ export class Channel extends Record({
     });
   }
 }
-
-// export const Channel = new Record({
-//   key: null,
-//   userUid: null,
-//   private: false,
-//   name: null,
-//   purpose: null,
-//   invites: [],
-//   createdAt: null,
-//   updatedAt: null
-// });

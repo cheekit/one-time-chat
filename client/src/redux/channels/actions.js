@@ -13,10 +13,12 @@ import {
   LOAD_CHANNELS_SUCCESS
 } from './action-types';
 
-
 export function createChannel(channel) {
-  return dispatch => {
-    channelList.push(channel)
+  return (dispatch, getState) => {
+    const { auth } = getState();
+    const newChannel = channel.set('userUid', auth.id);
+
+    return channelList.push(newChannel.toJS())
       .catch(error => dispatch(createChannelError(error)));
   };
 }
@@ -109,6 +111,13 @@ export function loadChannelsSuccess(channels) {
 // }
 //
 export function loadChannels() {
+  return (dispatch) => {
+    channelList.path = `channels`;
+    channelList.subscribe(dispatch);
+  };
+}
+
+export function loadOwnChannels() {
   return (dispatch, getState) => {
     const { auth } = getState();
     channelList.path = `channels/${auth.id}`;

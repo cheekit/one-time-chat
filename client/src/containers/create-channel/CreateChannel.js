@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { channelActions } from '../../redux/channels';
+import { channelActions, Channel } from '../../redux/channels';
 import { Toggle, TextField, FlatButton } from 'material-ui';
 import validator from 'validator';
 
@@ -16,17 +16,9 @@ const contextTypes = {
   router: PropTypes.object.isRequired,
 }
 
-function initChannel() {
-  return {
-    private: false,
-    name: '',
-    purpose: '',
-  };
-}
-
 class CreateChannel extends Component {
   state = {
-    channel: initChannel(),
+    channel: new Channel(),
     errors: [],
     disabledSubmit: true,
   }
@@ -41,10 +33,10 @@ class CreateChannel extends Component {
 
   handleUpdate = this.handleUpdate.bind(this);
   handleUpdate(key, value) {
-    const updateState = Object.assign({}, this.state.channel);
-    updateState[key] = value;
+    const { channel } = this.state;
+    const newChannel = channel.set(key, value);
     this.setState({
-      channel: updateState
+      channel: newChannel,
     });
   }
 
@@ -57,7 +49,7 @@ class CreateChannel extends Component {
     createChannel(channel);
 
     this.setState({
-      channel: initChannel(),
+      channel: new Channel(),
     });
     this.context.router.replaceWith('/');
   }
