@@ -39,8 +39,8 @@ function App(props){
       isPublic: true,
     },
     {
-      pattern: '/chat',
-      content: () => <Chat />,
+      pattern: '/chat/:channelKey',
+      content: (params) => <Chat {...params} />,
       toolbar: () => <Toolbar auth={auth} signOut={signOut}/>,
       isAuth,
     },
