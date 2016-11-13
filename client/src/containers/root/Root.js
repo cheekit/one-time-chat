@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { channelActions } from '../../redux/channels';
-import './root.css';
-import { ChannelList } from '../../components'
+import './Root.css';
+import { ChannelList } from '../../components';
 
 const propTypes = {
   dispatch: PropTypes.func,
