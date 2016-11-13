@@ -3,7 +3,7 @@ import * as messageActions from './actions';
 import { Message } from './message';
 
 export const messageList = new FirebaseList({
-  // onAdd: messageActions.createChannelSuccess,
+  onAdd: messageActions.createMessageSuccess,
   // onChange: channelActions.updateTaskSuccess,
   onLoad: messageActions.loadMessagesSuccess
   // onRemove: channelActions.deleteTaskSuccess
