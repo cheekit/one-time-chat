@@ -4,7 +4,7 @@ import {
 } from '../post-body';
 
 export const PostBodyFactory = {
-  createFromObject: (obj) => {
+  createFromObject: (obj = {}) => {
     if (obj.stampId) {
       return new StampPostBody(obj);
     } else {
