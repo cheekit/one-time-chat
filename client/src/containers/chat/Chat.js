@@ -1,7 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 // import { ChatSidebar } from '../sidebars';
-import { messageActions } from '../../redux/messages';
+import { messageActions, Message } from '../../redux/messages';
+
 
 import './Chat.css';
 
@@ -12,12 +13,13 @@ const propTypes = {
   }),
   loadMessages: PropTypes.func,
   unloadMessages: PropTypes.func,
+  createMessage: PropTypes.func,
 };
 
 class Chat extends Component {
   state = {
     height: document.documentElement.clientHeight,
-    message: '',
+    message: new Message(),
   }
 
   componentDidMount() {
@@ -40,15 +42,26 @@ class Chat extends Component {
 
   handleUpdateMessage = this.handleUpdateMessage.bind(this);
   handleUpdateMessage(e) {
-    this.setState({message: e.target.value});
+    const { message } = this.state;
+    const body = message.body; //TODO it must check stringPostBody or StampBody;
+    const newBody = body.set('content', e.target.value);
+    const newMessage = message.set('body', newBody);
+
+    this.setState({
+      message: newMessage,
+    });
   }
 
   handleSubmit = this.handleSubmit.bind(this);
   handleSubmit(e) {
     e.preventDefault();
+    const { createMessage } = this.props;
+    const { message } = this.state;
+
+    createMessage(message);
 
     this.setState({
-      message: '',
+      message: new Message(),
     });
   }
 
@@ -82,7 +95,7 @@ class Chat extends Component {
                 {messages.map((m, i) => this.renderMessage('', m, i))}
               </ul>
               <form onSubmit={this.handleSubmit}>
-                <input onChange={this.handleUpdateMessage} value={message}/><button>Send</button>
+                <input onChange={this.handleUpdateMessage} value={message.body.content}/><button>Send</button>
               </form>
             </div>
           </div>
