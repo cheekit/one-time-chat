@@ -1,48 +1,42 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { initSocket, sendMessage } from '../../redux/chat';
-import { ChatSidebar } from '../sidebars';
+// import { ChatSidebar } from '../sidebars';
+import { messageActions } from '../../redux/messages';
 
 import './Chat.css';
 
 const propTypes = {
-  dispatch: PropTypes.func,
-  sockets: PropTypes.object,
+  messages: PropTypes.object,
+  params: PropTypes.shape({
+    channelKey: PropTypes.string,
+  }),
+  loadMessages: PropTypes.func,
+  unloadMessages: PropTypes.func,
 };
 
 class Chat extends Component {
   state = {
     height: document.documentElement.clientHeight,
-    sockets: {
-      messages: [],
-    },
     message: '',
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { params, loadMessages } = this.props;
 
-    dispatch(initSocket());
-
-    window.addEventListener('resize', this.handleResize);
+    loadMessages(params.channelKey);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize);
+    const { unloadMessages } = this.props;
+    unloadMessages();
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { sockets } = nextProps;
-
-    if (sockets) this.setState({ sockets });
-  }
-
-  handleResize = this.handleResize.bind(this);
-  handleResize() {
-    this.setState({
-      height: document.querySelector('.application_content').clientHeight,
-    });
-  }
+  // handleResize = this.handleResize.bind(this);
+  // handleResize() {
+  //   this.setState({
+  //     height: document.querySelector('.application_content').clientHeight,
+  //   });
+  // }
 
   handleUpdateMessage = this.handleUpdateMessage.bind(this);
   handleUpdateMessage(e) {
@@ -52,11 +46,6 @@ class Chat extends Component {
   handleSubmit = this.handleSubmit.bind(this);
   handleSubmit(e) {
     e.preventDefault();
-    const { dispatch } = this.props;
-    const { message, sockets } = this.state;
-    const { name } = sockets;
-
-    dispatch(sendMessage(name, message))
 
     this.setState({
       message: '',
@@ -71,14 +60,14 @@ class Chat extends Component {
     return (
       <li key={i}>
         <span style={userNameStyle}>{user}</span><br />
-        {message}
+        {message.body.content}
       </li>
     );
   }
 
   render() {
-    const { sockets, message, height } = this.state;
-    const { messages } = sockets;
+    const { messages } = this.props;
+    const { message, height } = this.state;
     const formHeight = 40+64;
     const messagesStyle = {
       height: height - formHeight,
@@ -90,7 +79,7 @@ class Chat extends Component {
           <div className="search_inner_content">
             <div style={{height: height}}>
               <ul className={"messages"} style={messagesStyle}>
-                {messages.map((m, i) => this.renderMessage(m.user, m.message, i))}
+                {messages.map((m, i) => this.renderMessage('', m, i))}
               </ul>
               <form onSubmit={this.handleSubmit}>
                 <input onChange={this.handleUpdateMessage} value={message}/><button>Send</button>
@@ -99,7 +88,6 @@ class Chat extends Component {
           </div>
         </div>
         <div className="search_sidebar">
-          <ChatSidebar />
         </div>
       </section>
 
@@ -108,11 +96,19 @@ class Chat extends Component {
 }
 
 function mapStateToProps(state) {
-  const { sockets } = state.socketsReducer;
+  const { messages } = state;
 
-  return { sockets };
+  return { messages: messages.list };
 }
+
+const mapDispatchToProps = Object.assign(
+  {},
+  messageActions
+);
 
 Chat.propTypes = propTypes;
 
-export default connect(mapStateToProps)(Chat);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Chat);
