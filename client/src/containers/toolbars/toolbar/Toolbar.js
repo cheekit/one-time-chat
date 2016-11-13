@@ -85,7 +85,9 @@ class Toolbar extends Component {
 
     const titleElement = (
       <div style={{display: 'inline-block'}}>
-        <span style={{marginRight: '20px'}} >OneTimeChat</span>
+        <Link to="/" style={{ textDecoration: 'none', color: 'white'}}>
+          <span style={{marginRight: '20px'}} >OneTimeChat</span>
+        </Link>
         {
           isAuth &&
             <Link to="/create-channel">
