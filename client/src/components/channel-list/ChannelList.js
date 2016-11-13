@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { List } from 'immutable';
 import { FlatButton } from 'material-ui';
+import { Link } from 'react-router';
 
 
 import './ChannelList.css';
@@ -43,7 +44,9 @@ class ChannelList extends Component{
 
   renderChannel(channel, index) {
     const { selectIndex, lineClassName, showJoinRoom } = this.state;
-    const { name, purpose } = channel;
+    const { name, purpose, key } = channel;
+
+    const pattern = `/chat/${key}`;
 
     return (
       <div key={index} className="channel">
@@ -62,11 +65,13 @@ class ChannelList extends Component{
             <div className='channel-overlay'>
               <hr className={lineClassName} />
               {showJoinRoom &&
-                <FlatButton
-                  style={{color: "white", position: 'absolute', left: '33%', top: '40%', border: '1px solid', backgroundColor: '#222'}}
-                  label={'Join Room'}
-                  primary={true}
-                />
+                <Link to={pattern}>
+                  <FlatButton
+                    style={{color: "white", position: 'absolute', left: '33%', top: '40%', border: '1px solid', backgroundColor: '#222'}}
+                    label={'Join Room'}
+                    primary={true}
+                  />
+                </Link>
               }
             </div>
         }
