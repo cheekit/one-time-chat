@@ -8,6 +8,7 @@ import './ChannelList.css';
 
 const propTypes = {
   channels: PropTypes.instanceOf(List).isRequired,
+  onMouseClick: PropTypes.func,
   // deleteChannel: PropTypes.func.isRequired,
   // updateChannel: PropTypes.func.isRequired
 };
@@ -42,7 +43,7 @@ class ChannelList extends Component{
     }, 160);
   }
 
-  renderChannel(channel, index) {
+  renderChannel(channel, index, onMouseClick) {
     const { selectIndex, lineClassName, showJoinRoom } = this.state;
     const { name, purpose, key } = channel;
 
@@ -70,6 +71,7 @@ class ChannelList extends Component{
                     style={{color: "white", position: 'absolute', left: '33%', top: '40%', border: '1px solid', backgroundColor: '#222'}}
                     label={'Join Room'}
                     primary={true}
+                    onClick={() => onMouseClick(channel)}
                   />
                 </Link>
               }
@@ -80,11 +82,11 @@ class ChannelList extends Component{
   }
 
   render() {
-    const { channels } = this.props;
+    const { channels, onMouseClick } = this.props;
 
     return (
       <div className="channel-list">
-        {channels.map((channel, index) => this.renderChannel(channel, index))}
+        {channels.map((channel, index) => this.renderChannel(channel, index, onMouseClick))}
       </div>
     );
   }

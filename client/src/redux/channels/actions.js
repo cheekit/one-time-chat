@@ -7,8 +7,8 @@ import {
   // DELETE_TASK_SUCCESS,
   // FILTER_TASKS,
   // UNDELETE_TASK_ERROR,
-  // UPDATE_TASK_ERROR,
-  // UPDATE_TASK_SUCCESS
+  UPDATE_CHANNEL_ERROR,
+  UPDATE_CHANNEL_SUCCESS,
   UNLOAD_CHANNELS_SUCCESS,
   LOAD_CHANNELS_SUCCESS
 } from './action-types';
@@ -75,34 +75,44 @@ export function createChannelSuccess(channel) {
 //   };
 // }
 //
-// export function updateTaskError(error) {
-//   return {
-//     type: UPDATE_TASK_ERROR,
-//     payload: error
-//   };
-// }
-//
-// export function updateTask(task, changes) {
-//   return dispatch => {
-//     taskList.update(task.key, changes)
-//       .catch(error => dispatch(updateTaskError(error)));
-//   };
-// }
-//
-// export function updateTaskSuccess(task) {
-//   return {
-//     type: UPDATE_TASK_SUCCESS,
-//     payload: task
-//   };
-// }
-//
+
+export function joinUser(channel) {
+  return (dispatch, getState) => {
+    const { members } = channel;
+    const { auth } = getState();
+    members.push(auth.id);
+    return dispatch(updateChannel(channel, members));
+  };
+}
+
+export function updateChannelError(error) {
+  return {
+    type: UPDATE_CHANNEL_ERROR,
+    payload: error
+  };
+}
+
+function updateChannel(channel, changes) {
+  return dispatch => {
+    channelList.update(channel.key, changes)
+      .catch(error => dispatch(updateChannelError(error)));
+  };
+}
+
+export function updateChannelSuccess(channel) {
+  return {
+    type: UPDATE_CHANNEL_SUCCESS,
+    payload: channel
+  };
+}
+
 export function loadChannelsSuccess(channels) {
   return {
     type: LOAD_CHANNELS_SUCCESS,
     payload: channels
   };
 }
-//
+
 // export function filterTasks(filterType) {
 //   return {
 //     type: FILTER_TASKS,

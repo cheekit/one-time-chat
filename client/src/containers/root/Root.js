@@ -7,6 +7,9 @@ import { ChannelList } from '../../components';
 const propTypes = {
   dispatch: PropTypes.func,
   channels: PropTypes.object,
+  loadChannels: PropTypes.func,
+  unloadChannels: PropTypes.func,
+  joinUser: PropTypes.func,
 };
 
 class Root extends Component {
@@ -26,9 +29,12 @@ class Root extends Component {
   }
 
   renderChannels(channels) {
+    const { joinUser } = this.props;
+
     return (
       <ChannelList
         channels={channels}
+        onMouseClick={joinUser}
       />
     );
   }
