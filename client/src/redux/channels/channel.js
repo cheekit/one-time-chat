@@ -7,11 +7,12 @@ export class Channel extends Record({
   name: null,
   purpose: null,
   invites: [],
+  members: [],
   createdAt: null,
   updatedAt: null
 }) {
   constructor(props = {}) {
-    const { key, userUid, name, privateFlg, purpose, invites, createdAt, updatedAt } = props;
+    const { key, userUid, name, privateFlg, purpose, invites, members, createdAt, updatedAt } = props;
 
     super({
       key: key || null,
@@ -20,6 +21,7 @@ export class Channel extends Record({
       private: privateFlg || false,
       purpose: purpose || '',
       invites: invites || [],
+      members: members || [],
       createdAt: createdAt || new Date(),
       updatedAt: updatedAt || new Date(),
     });
