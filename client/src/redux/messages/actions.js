@@ -5,11 +5,27 @@ import {
   CREATE_MESSAGE_ERROR,
   CREATE_MESSAGE_SUCCESS
 } from './action-types';
+import { Message } from './message';
 
-export function createMessage(message) {
+export function createJoinMessage(name) {
+  return dispatch => {
+    const message = new Message({ body: {content: `${name} joined` }});
+    return dispatch(createMessage(message, true));
+  };
+}
+
+export function createLeftMessage(name) {
+  return dispatch => {
+    const message = new Message({ body: {content: `${name} leaved`}});
+    return dispatch(createMessage(message, true));
+  };
+}
+
+export function createMessage(message, system = false) {
   return (dispatch, getState) => {
     const { auth } = getState();
-    const newMessage = message.set('from', auth.id);
+    const from = system === true ? 'system' : auth.id;
+    const newMessage = message.set('from', from);
 
     return messageList.push(newMessage.toJS())
       .catch(error => dispatch(createMessageError(error)));
