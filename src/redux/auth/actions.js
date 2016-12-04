@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import { firebaseAuth } from '../firebase';
+import { addUser } from '../users/actions';
 import {
   INIT_AUTH,
   SIGN_IN_ERROR,
@@ -11,7 +12,10 @@ import {
 function authenticate(provider) {
   return dispatch => {
     firebaseAuth.signInWithPopup(provider)
-      .then(result => dispatch(signInSuccess(result)))
+      .then(result => {
+        addUser(result.user)
+          .then(() => dispatch(signInSuccess(result)));
+        })
       .catch(error => dispatch(signInError(error)));
   };
 }
