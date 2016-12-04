@@ -29,7 +29,7 @@ body {
 
 .application_wrapper .application_content {
   display: flex;
-  position: absolute;
+  position: fixed;
   top: 64px;
   left: 0;
   bottom: 0;

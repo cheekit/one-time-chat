@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 // import { ChatSidebar } from '../sidebars';
 import { messageActions, Message } from '../../redux/messages';
+import { deleteChannel } from '../../redux/channels/actions';
 import { joinChannel, leftChannel } from '../../redux/services';
 
 import './Chat.css';
@@ -14,6 +15,7 @@ const propTypes = {
   unloadMessages: PropTypes.func,
   createMessage: PropTypes.func,
   loadChannel: PropTypes.func,
+  deleteChannel: PropTypes.func,
   auth: PropTypes.object,
   params: PropTypes.shape({
     channelKey: PropTypes.string,
@@ -43,7 +45,9 @@ class Chat extends Component {
   }
 
   handleDeleteChannel(props) {
-    throw new Error("it's not complete function");
+    const { params, router } = props;
+    deleteChannel({channelKey: params.channelKey});
+    router.replaceWith('/');
   }
 
   handleLeftChannel(props) {
@@ -134,7 +138,8 @@ function mapDispatchToProps(dispatch) {
     unloadMessages: () => dispatch(messageActions.unloadMessages()),
     createMessage: (props) => dispatch(messageActions.createMessage(props)),
     joinChannel: (props) => dispatch(joinChannel(props)),
-    leftChannel: (props) => dispatch(leftChannel(props))
+    leftChannel: (props) => dispatch(leftChannel(props)),
+    deleteChannel: (props) => dispatch(deleteChannel(props)),
   };
 }
 

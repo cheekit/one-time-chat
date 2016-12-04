@@ -6,5 +6,5 @@ export const channelList = new FirebaseList({
   onAdd: channelActions.createChannelSuccess,
   onChange: channelActions.updateChannelSuccess,
   onLoad: channelActions.loadChannelsSuccess,
-  // onRemove: channelActions.deleteTaskSuccess
+  onRemove: channelActions.deleteChannelSuccess
 }, Channel);

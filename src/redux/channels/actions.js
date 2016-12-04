@@ -7,7 +7,9 @@ import {
   UPDATE_CHANNEL_ERROR,
   UPDATE_CHANNEL_SUCCESS,
   UNLOAD_CHANNELS_SUCCESS,
-  LOAD_CHANNELS_SUCCESS
+  LOAD_CHANNELS_SUCCESS,
+  DELETE_CHANNEL_ERROR,
+  DELETE_CHANNEL_SUCCESS,
 } from './action-types';
 import { Channel } from './channel';
 
@@ -96,5 +98,29 @@ export function unloadChannels() {
   channelList.unsubscribe();
   return {
     type: UNLOAD_CHANNELS_SUCCESS
+  };
+}
+
+export function deleteChannel(channel) {
+  console.log(channelList);
+
+  return dispatch => {
+    channelList.remove(channel.key)
+      .then(() => console.log(channelList))
+      .catch(error => dispatch(deleteChannelError(error)));
+  };
+}
+
+export function deleteChannelError(error) {
+  return {
+    type: DELETE_CHANNEL_ERROR,
+    payload: error
+  };
+}
+
+export function deleteChennelSuccess(channel) {
+  return {
+    type: DELETE_CHANNEL_SUCCESS,
+    payload: channel
   };
 }
