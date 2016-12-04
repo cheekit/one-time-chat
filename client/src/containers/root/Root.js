@@ -1,15 +1,14 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { channelActions } from '../../redux/channels';
-import './Root.css';
 import { ChannelList } from '../../components';
+import './Root.css';
 
 const propTypes = {
   dispatch: PropTypes.func,
   channels: PropTypes.object,
   loadChannels: PropTypes.func,
   unloadChannels: PropTypes.func,
-  joinUser: PropTypes.func,
 };
 
 class Root extends Component {
@@ -29,12 +28,9 @@ class Root extends Component {
   }
 
   renderChannels(channels) {
-    const { joinUser } = this.props;
-
     return (
       <ChannelList
         channels={channels}
-        onMouseClick={joinUser}
       />
     );
   }
