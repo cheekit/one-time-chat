@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { messageActions, Message } from '../../redux/messages';
 import { channelActions } from '../../redux/channels';
 import { joinChannel, leftChannel } from '../../redux/services';
+import { loadRoomMembers, unloadRoomMembers } from '../../redux/users/actions';
 
 import './Chat.css';
 
@@ -16,6 +17,8 @@ const propTypes = {
   createMessage: PropTypes.func,
   loadChannel: PropTypes.func,
   deleteChannel: PropTypes.func,
+  loadRoomMembers: PropTypes.func,
+  unloadRoomMembers: PropTypes.func,
   auth: PropTypes.object,
   params: PropTypes.shape({
     channelKey: PropTypes.string,
@@ -30,18 +33,20 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    const { auth, loadMessages, joinChannel, router } = this.props;
+    const { auth, loadMessages, joinChannel, loadRoomMembers, router } = this.props;
     const { channelKey } = this.props.params;
 
     Promise.all([
       loadMessages(channelKey),
       joinChannel({ channelKey, name: auth.name, id: auth.id, router }),
+      loadRoomMembers(channelKey)
     ]);
   }
 
   componentWillUnmount() {
-    const { unloadMessages } = this.props;
+    const { unloadMessages, unloadRoomMembers } = this.props;
     unloadMessages();
+    unloadRoomMembers();
   }
 
   handleDeleteChannel(props) {
@@ -127,8 +132,9 @@ class Chat extends Component {
 }
 
 function mapStateToProps(state) {
-  const { messages, auth } = state;
+  const { messages, auth, roomMembers } = state;
 
+  console.log(roomMembers.list);
   return { messages: messages.list , auth: auth };
 }
 
@@ -139,7 +145,9 @@ function mapDispatchToProps(dispatch) {
     createMessage: (props) => dispatch(messageActions.createMessage(props)),
     joinChannel: (props) => dispatch(joinChannel(props)),
     leftChannel: (props) => dispatch(leftChannel(props)),
-    deleteChannel: (props) => dispatch(channelActions.deleteChannel(props))
+    deleteChannel: (props) => dispatch(channelActions.deleteChannel(props)),
+    loadRoomMembers: (props) => dispatch(loadRoomMembers(props)),
+    unloadRoomMembers: (props) => dispatch(unloadRoomMembers()),
   };
 }
 
