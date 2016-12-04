@@ -8,8 +8,6 @@ export function leftChannel({ channelKey, name, id }) {
 
       const members = channel.members;
       delete members[id];
-      console.log(channel);
-      console.log(members);
       dispatch(updateChannel(channel, { members }));
     });
   };
