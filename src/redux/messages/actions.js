@@ -1,3 +1,4 @@
+import { firebaseDb } from '../firebase/firebase';
 import { messageList } from './message-list';
 import {
   UNLOAD_MESSAGES_SUCCESS,
@@ -65,4 +66,12 @@ export function unloadMessages() {
   return {
     type: UNLOAD_MESSAGES_SUCCESS
   };
+}
+
+export function deleteMessages(channelKey) {
+  return new Promise((resolve, reject) => {
+    const path = `messages/${channelKey}`;
+    firebaseDb.ref(path)
+      .remove(error => error ? reject(error) : resolve());
+  });
 }

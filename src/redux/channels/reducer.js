@@ -21,8 +21,6 @@ export const ChannelState = new Record({
 
 
 export function channelsReducer(state = new ChannelState(), {payload, type}) {
-  console.log(payload);
-
   switch (type) {
     case CREATE_CHANNEL_SUCCESS:
       return state.merge({

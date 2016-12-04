@@ -1,5 +1,6 @@
 // import { getDeletedTask } from './selectors';
 import { firebaseDb } from '../firebase/firebase';
+import { deleteMessages, unloadMessages } from '../messages/actions';
 import { channelList } from './channel-list';
 import {
   CREATE_CHANNEL_ERROR,
@@ -102,11 +103,14 @@ export function unloadChannels() {
 }
 
 export function deleteChannel(channel) {
-  console.log(channelList);
-
-  return dispatch => {
+  return (dispatch) => {
     channelList.remove(channel.key)
-      .then(() => console.log(channelList))
+      .then(() => {
+        Promise.all([
+          unloadMessages(),
+          deleteMessages(channel.key)
+        ]);
+      })
       .catch(error => dispatch(deleteChannelError(error)));
   };
 }

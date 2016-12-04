@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 // import { ChatSidebar } from '../sidebars';
 import { messageActions, Message } from '../../redux/messages';
-import { deleteChannel } from '../../redux/channels/actions';
+import { channelActions } from '../../redux/channels';
 import { joinChannel, leftChannel } from '../../redux/services';
 
 import './Chat.css';
@@ -40,18 +40,18 @@ class Chat extends Component {
   }
 
   componentWillUnmount() {
-    const { unloadMessages, unloadChannels } = this.props;
+    const { unloadMessages } = this.props;
     unloadMessages();
   }
 
   handleDeleteChannel(props) {
-    const { params, router } = props;
-    deleteChannel({channelKey: params.channelKey});
+    const { deleteChannel, params, router } = props;
+    deleteChannel({key: params.channelKey})
     router.replaceWith('/');
   }
 
   handleLeftChannel(props) {
-    const { auth, params, leftChannel, router, dispatch } = props;
+    const { auth, params, leftChannel, router } = props;
 
     leftChannel({channelKey: params.channelKey, name: auth.name, id: auth.id});
     router.replaceWith('/');
@@ -134,12 +134,12 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadMessages: () => dispatch(messageActions.loadMessages()),
+    loadMessages: (props) => dispatch(messageActions.loadMessages(props)),
     unloadMessages: () => dispatch(messageActions.unloadMessages()),
     createMessage: (props) => dispatch(messageActions.createMessage(props)),
     joinChannel: (props) => dispatch(joinChannel(props)),
     leftChannel: (props) => dispatch(leftChannel(props)),
-    deleteChannel: (props) => dispatch(deleteChannel(props)),
+    deleteChannel: (props) => dispatch(channelActions.deleteChannel(props))
   };
 }
 
