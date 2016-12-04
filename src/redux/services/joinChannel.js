@@ -12,7 +12,12 @@ export function joinChannel({ channelKey, name, id, router }) {
         }
 
         const members = channel.members;
-        members[id] = true;
+
+        members[id] = {
+          id: id,
+          status: true
+        };
+
         dispatch(updateChannel(channel, { members }));
       }
     });
