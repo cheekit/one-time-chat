@@ -34,8 +34,8 @@ class Chat extends Component {
     const { channelKey } = this.props.params;
 
     Promise.all([
-      joinChannel({ channelKey, name: auth.name, id: auth.id, router }),
       loadMessages(channelKey),
+      joinChannel({ channelKey, name: auth.name, id: auth.id, router }),
     ]);
   }
 
