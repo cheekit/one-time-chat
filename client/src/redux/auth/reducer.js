@@ -1,14 +1,12 @@
 import { Record } from 'immutable';
 import { INIT_AUTH, SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS } from './action-types';
 
-
 export const AuthState = new Record({
   authenticated: false,
   id: null,
   name: '',
   photoUrl: '',
 });
-
 
 export function authReducer(state = new AuthState(), {payload, type}) {
   switch (type) {
@@ -20,7 +18,6 @@ export function authReducer(state = new AuthState(), {payload, type}) {
         name: payload ? payload.displayName : '',
         photoUrl: payload ? payload.photoURL : '',
       });
-
     case SIGN_OUT_SUCCESS:
       return new AuthState();
 

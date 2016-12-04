@@ -13,6 +13,10 @@ const propTypes = {
   // updateChannel: PropTypes.func.isRequired
 };
 
+const defaultProps = {
+  onMouseClick: () => {},
+};
+
 class ChannelList extends Component{
   state = {
     lineClassName: '',
@@ -93,4 +97,6 @@ class ChannelList extends Component{
 }
 
 ChannelList.propTypes = propTypes;
+ChannelList.defaultProps = defaultProps;
+
 export default ChannelList;
