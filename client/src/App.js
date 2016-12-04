@@ -77,6 +77,7 @@ function App(props){
                 component={route.content}
                 isPublic={route.isPublic}
                 isAuth={route.isAuth}
+                router={router}
               />
             ))}
           </div>
@@ -86,10 +87,10 @@ function App(props){
   );
 }
 
-const MatchWhenAuthorized = ({ component: Component, isPublic, isAuth, ...rest }) => (
+const MatchWhenAuthorized = ({ component: Component, isPublic, isAuth, router, ...rest }) => (
   <Match {...rest} render={props => (
      isPublic || isAuth ? (
-      <Component {...props}/>
+      <Component {...props} router={router}/>
     ) : (
       <Redirect to={{
         pathname: '/sign-in',
