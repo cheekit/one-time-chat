@@ -2,18 +2,23 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 // import { ChatSidebar } from '../sidebars';
 import { messageActions, Message } from '../../redux/messages';
-
+import { joinChannel, leftChannel } from '../../redux/services';
 
 import './Chat.css';
 
 const propTypes = {
   messages: PropTypes.object,
-  params: PropTypes.shape({
-    channelKey: PropTypes.string,
-  }),
+  joinChannel: PropTypes.func,
+  leftChannel: PropTypes.func,
   loadMessages: PropTypes.func,
   unloadMessages: PropTypes.func,
   createMessage: PropTypes.func,
+  loadChannel: PropTypes.func,
+  auth: PropTypes.object,
+  params: PropTypes.shape({
+    channelKey: PropTypes.string,
+  }),
+  router: PropTypes.object,
 };
 
 class Chat extends Component {
@@ -23,22 +28,30 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    const { params, loadMessages } = this.props;
+    const { auth, loadMessages, joinChannel, router } = this.props;
+    const { channelKey } = this.props.params;
 
-    loadMessages(params.channelKey);
+    Promise.all([
+      joinChannel({ channelKey, name: auth.name, id: auth.id, router }),
+      loadMessages(channelKey),
+    ]);
   }
 
   componentWillUnmount() {
-    const { unloadMessages } = this.props;
+    const { unloadMessages, unloadChannels } = this.props;
     unloadMessages();
   }
 
-  // handleResize = this.handleResize.bind(this);
-  // handleResize() {
-  //   this.setState({
-  //     height: document.querySelector('.application_content').clientHeight,
-  //   });
-  // }
+  handleDeleteChannel(props) {
+    throw new Error("it's not complete function");
+  }
+
+  handleLeftChannel(props) {
+    const { auth, params, leftChannel, router, dispatch } = props;
+
+    leftChannel({channelKey: params.channelKey, name: auth.name, id: auth.id});
+    router.replaceWith('/');
+  }
 
   handleUpdateMessage = this.handleUpdateMessage.bind(this);
   handleUpdateMessage(e) {
@@ -101,27 +114,33 @@ class Chat extends Component {
           </div>
         </div>
         <div className="search_sidebar">
+          <button onClick={() => this.handleLeftChannel(this.props)}> Left room </button>
+          <button onClick={() => this.handleDeleteChannel(this.props)}> Delete room </button>
         </div>
       </section>
-
     );
   }
 }
 
 function mapStateToProps(state) {
-  const { messages } = state;
+  const { messages, auth } = state;
 
-  return { messages: messages.list };
+  return { messages: messages.list , auth: auth };
 }
 
-const mapDispatchToProps = Object.assign(
-  {},
-  messageActions
-);
+function mapDispatchToProps(dispatch) {
+  return {
+    loadMessages: () => dispatch(messageActions.loadMessages()),
+    unloadMessages: () => dispatch(messageActions.unloadMessages()),
+    createMessage: (props) => dispatch(messageActions.createMessage(props)),
+    joinChannel: (props) => dispatch(joinChannel(props)),
+    leftChannel: (props) => dispatch(leftChannel(props))
+  };
+}
 
 Chat.propTypes = propTypes;
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Chat);
