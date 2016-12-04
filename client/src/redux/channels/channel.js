@@ -6,8 +6,8 @@ export class Channel extends Record({
   private: false,
   name: null,
   purpose: null,
-  invites: [],
-  members: [],
+  invites: {},
+  members: {},
   createdAt: null,
   updatedAt: null
 }) {
@@ -20,8 +20,8 @@ export class Channel extends Record({
       name: name || '',
       private: privateFlg || false,
       purpose: purpose || '',
-      invites: invites || [],
-      members: members || [],
+      invites: invites || {},
+      members: members || {},
       createdAt: createdAt || new Date(),
       updatedAt: updatedAt || new Date(),
     });

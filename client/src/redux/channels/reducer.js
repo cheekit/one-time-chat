@@ -6,12 +6,11 @@ import {
 
 import {
   CREATE_CHANNEL_SUCCESS,
-  LOAD_CHANNELS_SUCCESS
+  LOAD_CHANNELS_SUCCESS,
+  UPDATE_CHANNELS_SUCCESS
   // DELETE_TASK_SUCCESS,
   // FILTER_TASKS,
-  // UPDATE_TASK_SUCCESS
 } from './action-types';
-
 
 export const ChannelState = new Record({
   deleted: null,
@@ -45,14 +44,14 @@ export function channelsReducer(state = new ChannelState(), {payload, type}) {
     case LOAD_CHANNELS_SUCCESS:
       return state.set('list', new List(payload.reverse()));
     //
-    // case UPDATE_TASK_SUCCESS:
-    //   return state.merge({
-    //     deleted: null,
-    //     previous: null,
-    //     list: state.list.map(task => {
-    //       return task.key === payload.key ? payload : task;
-    //     })
-    //   });
+    case UPDATE_CHANNELS_SUCCESS:
+      return state.merge({
+        deleted: null,
+        previous: null,
+        list: state.deleted && state.deleted.key === payload.key ?
+          state.previous :
+          state.list.unshift(payload)
+      });
 
     case SIGN_OUT_SUCCESS:
       return new ChannelState();
